@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hacker Keys — Type Like a Movie Hacker</title>
+<meta name="description" content="Mash any key and realistic 2026-style code streams across your screen. Fake hacking simulator: themes, ACCESS GRANTED/DENIED overlays, fullscreen. No real hacking, just vibes." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='4' fill='%23050805'/%3E%3Ctext x='12' y='17' font-size='13' font-family='monospace' fill='%2333ff66' text-anchor='middle'%3E%26gt;_%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+<main id="terminal" aria-label="Fake hacking terminal">
+  <div id="screen" aria-live="off"><span id="code"></span><span id="caret"></span></div>
+  <div id="overlay" role="alert" hidden>
+    <p id="overlay-title">ACCESS GRANTED</p>
+    <p id="overlay-sub">root@prod — welcome back</p>
+  </div>
+  <header id="hud">
+    <span id="hud-theme">MATRIX GREEN</span>
+    <span id="hud-hint">any key = type · G granted · D denied · F fullscreen · ESC clear</span>
+  </header>
+  <nav id="theme-dock" aria-label="Theme selector">
+    <button class="theme-chip" data-theme="matrix" type="button" aria-label="Matrix Green">▮ matrix</button>
+    <button class="theme-chip" data-theme="cyber" type="button" aria-label="Cyber Blue">▮ cyber</button>
+    <button class="theme-chip" data-theme="amber" type="button" aria-label="Amber Retro">▮ amber</button>
+    <button class="theme-chip" id="share-chip" type="button" aria-label="Copy share link">⧉ share</button>
+  </nav>
+</main>
+<script type="module" src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+:root {
+  --fg: #33ff66;
+  --dim: #1a7a33;
+  --bg: #050805;
+  --accent: #baffcc;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+body {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: var(--fg);
+  cursor: text;
+}
+
+#terminal {
+  position: relative;
+  height: 100%;
+  padding: 18px 22px 64px;
+}
+
+#screen {
+  height: calc(100% - 24px);
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-all;
+  text-shadow: 0 0 6px color-mix(in srgb, var(--fg) 55%, transparent);
+}
+
+#code { color: var(--fg); }
+
+#caret {
+  display: inline-block;
+  width: 8px;
+  height: 1.1em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: var(--fg);
+  animation: blink 1.05s steps(1) infinite;
+}
+
+@keyframes blink { 50% { opacity: 0; } }
+
+#hud {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  pointer-events: none;
+}
+
+#hud-theme {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+#hud-hint {
+  font-size: 10px;
+  color: var(--dim);
+  opacity: 0.9;
+}
+
+#theme-dock {
+  position: absolute;
+  right: 16px;
+  bottom: 14px;
+  display: flex;
+  gap: 8px;
+}
+
+.theme-chip {
+  padding: 7px 12px;
+  border: 1px solid var(--dim);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  color: var(--fg);
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.theme-chip:hover { border-color: var(--fg); }
+.theme-chip[aria-current="true"] { border-color: var(--accent); color: var(--accent); }
+
+#overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(2px);
+}
+
+#overlay[hidden] { display: none; }
+
+#overlay-title {
+  margin: 0;
+  font-size: clamp(38px, 8vw, 92px);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--fg);
+  text-shadow: 0 0 22px color-mix(in srgb, var(--fg) 65%, transparent);
+}
+
+#overlay.denied #overlay-title { color: #ff4d5e; text-shadow: 0 0 22px rgba(255, 77, 94, 0.65); }
+
+#overlay-sub {
+  margin: 14px 0 0;
+  font-size: 13px;
+  color: var(--accent);
+  opacity: 0.9;
+}
