@@ -1,0 +1,12 @@
+{
+  "name": "hacker-keys",
+  "compatibility_date": "2026-09-18",
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "single-page-application"
+  },
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  }
+}
