@@ -315,7 +315,9 @@ window.addEventListener("keydown", (event) => {
     return; // brief screen swallows typing
   }
   if (!missionComplete.hidden) {
-    return; // completion screen swallows typing until a chip is clicked
+    // completion screen swallows typing, but M opens the next brief
+    if (key === "m" || key === "M") { openBrief(); }
+    return;
   }
 
   if (key === "m" || key === "M") { openBrief(); return; }
