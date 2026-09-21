@@ -211,6 +211,7 @@ function startMission(missionId) {
   missionBrief.hidden = true;
   missionComplete.hidden = true;
   missionHud.hidden = false;
+  document.body.classList.add("mission-live");
   clearInterval(clockTimer);
   clockTimer = setInterval(() => { updateMissionHud(); }, 250);
   cursor = 0;
@@ -274,6 +275,7 @@ function finishMission() {
     : `${strings().bestLabel}: ${bestKps} KPS · ${strings().streakLabel(stats.cleared)} · ${titleFor(stats.cleared, lang)}`;
   missionComplete.hidden = false;
   missionHud.hidden = true;
+  document.body.classList.remove("mission-live");
   mission.lastRank = r;
   mission.lastKps = kps;
   clearInterval(clockTimer);
@@ -285,6 +287,7 @@ function abortMission() {
   missionHud.hidden = true;
   missionBrief.hidden = true;
   missionComplete.hidden = true;
+  document.body.classList.remove("mission-live");
   clearInterval(clockTimer);
   updateStatsHud();
   cursor = 0;
