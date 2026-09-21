@@ -86,6 +86,9 @@ function applyLanguage(next) {
   window.history.replaceState(null, "", url);
   document.documentElement.setAttribute("lang", lang);
   langChip.textContent = lang === "ja" ? "🄓 EN" : "🄓 日本語";
+  againChip.textContent = lang === "ja" ? "↻ もう一度実行" : "↻ run it again";
+  missionShareChip.textContent = lang === "ja" ? "⧉ 結果をシェア" : "⧉ share result";
+  menuChip.textContent = lang === "ja" ? "☰ メニュー" : "☰ menu";
   hudHint.textContent = lang === "ja"
     ? "任意キーでタイプ · M ミッション · G 許可 · D 拒否 · F 全画面 · ESC クリア"
     : "any key = type · M mission · G granted · D denied · F fullscreen · ESC clear";
@@ -94,8 +97,29 @@ function applyLanguage(next) {
   briefHint.textContent = lang === "ja" ? "Mキーで開始 · ESCで中止" : "press M to start · ESC to abort";
   completeEyebrow.textContent = lang === "ja" ? "トレース完了 — あなたは最初からここにいない" : "TRACE COMPLETE — YOU WERE NEVER HERE";
   completeTitle.textContent = strings().completeTitle;
-  missionBrief.hidden = true;
-  missionComplete.hidden = true;
+  // Re-render whatever screen is live in the new language instead of blanket-hiding.
+  if (mission && mission.finishedAt) {
+    // completed mission: refresh the result copy in place
+    const copy = missionById(mission.missionId)[lang];
+    const r = mission.lastRank || rank(keysPerSecond(mission));
+    const kps = mission.lastKps || keysPerSecond(mission);
+    const secs = elapsedSeconds(mission);
+    completeSub.textContent = strings().completeSub(copy.name, r, kps, secs);
+    completeBlurb.textContent = (RANK_BLURBS[lang] || RANK_BLURBS.en)[r];
+    completeTime.textContent = lang === "ja" ? `${secs.toFixed(1)}秒` : `${secs.toFixed(1)}s`;
+    let stats = { best: {}, cleared: 0 };
+    try { stats = loadStats(localStorage); } catch { /* ignore */ }
+    completeRecord.textContent = `${strings().bestLabel}: ${(typeof stats.best[mission.missionId] === "number" ? stats.best[mission.missionId] : kps).toFixed(1)} KPS · ${strings().streakLabel(stats.cleared)} · ${titleFor(stats.cleared, lang)}`;
+  } else {
+    missionComplete.hidden = true;
+  }
+  if (mission && !mission.finishedAt && missionHud.hidden === false) {
+    // active mission: refresh the HUD copy in place
+    const copy = missionById(mission.missionId)[lang];
+    missionName.textContent = `${strings().missionLabel}: ${copy.name}`;
+  } else if (!mission) {
+    missionBrief.hidden = true;
+  }
   updateStatsHud();
 }
 
@@ -187,6 +211,8 @@ function startMission(missionId) {
   missionBrief.hidden = true;
   missionComplete.hidden = true;
   missionHud.hidden = false;
+  clearInterval(clockTimer);
+  clockTimer = setInterval(() => { updateMissionHud(); }, 250);
   cursor = 0;
   corpusIndex = 0;
   const copy = missionById(mission.missionId)[lang];
@@ -206,7 +232,9 @@ function updateMissionHud() {
   missionClock.textContent = lang === "ja"
     ? `${elapsedSeconds(mission).toFixed(1)}秒`
     : `${elapsedSeconds(mission).toFixed(1)}s`;
-  missionFill.style.width = `${missionProgress(mission, mission.missionId) * 100}%`;
+  const missionPct = Math.round(missionProgress(mission, mission.missionId) * 100);
+  missionFill.style.width = `${missionPct}%`;
+  document.getElementById("mission-progress").setAttribute("aria-valuenow", String(missionPct));
   stageFill.style.width = `${stageProgress(mission, mission.missionId) * 100}%`;
 }
 
@@ -248,6 +276,8 @@ function finishMission() {
   missionHud.hidden = true;
   mission.lastRank = r;
   mission.lastKps = kps;
+  clearInterval(clockTimer);
+  updateStatsHud();
 }
 
 function abortMission() {
@@ -255,6 +285,8 @@ function abortMission() {
   missionHud.hidden = true;
   missionBrief.hidden = true;
   missionComplete.hidden = true;
+  clearInterval(clockTimer);
+  updateStatsHud();
   cursor = 0;
   render();
 }

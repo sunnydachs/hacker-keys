@@ -98,11 +98,26 @@ describe("measurement", () => {
       missionId: "mainframe",
       stageIndex: 0,
       keysThisStage: 10,
-      startedAt: Date.now() - 2000,
-      finishedAt: null,
+      startedAt: 0,
+      finishedAt: 2000,
       keystrokes: 10,
     };
     expect(keysPerSecond(state)).toBeCloseTo(5, 0);
+  });
+
+  it("advance is terminal after completion (repeated calls change nothing)", () => {
+    let state = createMission("mainframe");
+    const total = totalKeys("mainframe");
+    let result = { state, stageCleared: false, missionCleared: false };
+    for (let i = 0; i < total; i += 1) {
+      result = advance(result.state, "mainframe");
+    }
+    expect(result.missionCleared).toBe(true);
+    const frozen = result.state;
+    const again = advance(frozen, "mainframe");
+    expect(again.state).toBe(frozen);
+    expect(again.missionCleared).toBe(false);
+    expect(again.state.keystrokes).toBe(total);
   });
 
   it("rank thresholds map correctly", () => {

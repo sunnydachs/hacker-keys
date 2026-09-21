@@ -102,7 +102,11 @@ export function totalKeys(missionId) {
 }
 
 // Advance one keystroke. Returns { state, stageCleared, missionCleared }.
+// A completed mission is terminal: repeated calls return the state unchanged.
 export function advance(state, missionId, corpora) {
+  if (state.finishedAt !== null) {
+    return { state, stageCleared: false, missionCleared: false };
+  }
   const mission = MISSIONS.find((m) => m.id === missionId) || MISSIONS[0];
   const next = { ...state, keysThisStage: state.keysThisStage + 1, keystrokes: state.keystrokes + 1 };
   const target = mission.keysPerStage[next.stageIndex];
