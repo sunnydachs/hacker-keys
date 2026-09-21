@@ -126,3 +126,174 @@ body {
   color: var(--accent);
   opacity: 0.9;
 }
+
+/* ---- Mission mode ---- */
+
+#mission-hud {
+  position: absolute;
+  top: 14px;
+  left: 20px;
+  right: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  pointer-events: none;
+}
+
+#mission-hud[hidden] { display: none; }
+
+#mission-top {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+#mission-name {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+#mission-stage {
+  font-size: 11px;
+  color: var(--dim);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse { 50% { opacity: 0.45; } }
+
+#mission-stats {
+  display: flex;
+  gap: 16px;
+  font-size: 11px;
+  color: var(--fg);
+  opacity: 0.85;
+}
+
+#mission-progress {
+  position: relative;
+  height: 3px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--dim) 45%, transparent);
+  overflow: hidden;
+}
+
+#mission-progress-fill {
+  position: absolute;
+  inset: 0;
+  width: 0%;
+  background: var(--dim);
+  transition: width 0.2s linear;
+}
+
+#stage-progress-fill {
+  position: absolute;
+  inset: 0;
+  width: 0%;
+  background: var(--fg);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--fg) 60%, transparent);
+  transition: width 0.1s linear;
+}
+
+#mission-brief,
+#mission-complete {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 4px;
+  text-align: center;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(3px);
+  padding: 0 24px;
+}
+
+#mission-brief[hidden],
+#mission-complete[hidden] { display: none; }
+
+#brief-eyebrow,
+#complete-eyebrow {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--dim);
+}
+
+#brief-name,
+#complete-title {
+  margin: 6px 0 0;
+  font-size: clamp(30px, 6vw, 64px);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--fg);
+  text-shadow: 0 0 18px color-mix(in srgb, var(--fg) 55%, transparent);
+}
+
+#brief-text {
+  max-width: 560px;
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--accent);
+}
+
+#brief-hint {
+  margin: 18px 0 0;
+  font-size: 11px;
+  color: var(--dim);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+#complete-sub {
+  margin: 12px 0 0;
+  font-size: 15px;
+  color: var(--accent);
+}
+
+#complete-rank-blurb {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--dim);
+  font-style: italic;
+}
+
+#complete-stats {
+  display: flex;
+  gap: 34px;
+  margin-top: 22px;
+}
+
+#complete-stats div {
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+}
+
+#complete-stats span {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--fg);
+}
+
+#complete-stats label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--dim);
+}
+
+#complete-record {
+  margin: 16px 0 0;
+  font-size: 12px;
+  color: var(--accent);
+}
+
+#complete-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+

@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Hacker Keys — Type Like a Movie Hacker</title>
-<meta name="description" content="Mash any key and realistic 2026-style code streams across your screen. Fake hacking simulator: themes, ACCESS GRANTED/DENIED overlays, fullscreen. No real hacking, just vibes." />
+<meta name="description" content="Mash any key and realistic 2026-style code streams across your screen. Fake hacking simulator with missions, ranks and themes: breach the mainframe, crack auth, exfiltrate the weights. No real hacking, just vibes." />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='4' fill='%23050805'/%3E%3Ctext x='12' y='17' font-size='13' font-family='monospace' fill='%2333ff66' text-anchor='middle'%3E%26gt;_%3C/text%3E%3C/svg%3E" />
 <link rel="stylesheet" href="./styles.css" />
 </head>
@@ -15,14 +15,54 @@
     <p id="overlay-title">ACCESS GRANTED</p>
     <p id="overlay-sub">root@prod — welcome back</p>
   </div>
+  <div id="mission-hud" hidden>
+    <div id="mission-top">
+      <span id="mission-name">MISSION</span>
+      <span id="mission-stage">SCANNING PORTS</span>
+    </div>
+    <div id="mission-stats">
+      <span id="mission-kps">0.0 KPS</span>
+      <span id="mission-keys">0 keys</span>
+      <span id="mission-clock">0.0s</span>
+    </div>
+    <div id="mission-progress" role="progressbar" aria-label="Mission progress">
+      <i id="mission-progress-fill"></i>
+      <i id="stage-progress-fill"></i>
+    </div>
+  </div>
+  <div id="mission-brief" hidden>
+    <p id="brief-eyebrow">INCOMING TRANSMISSION</p>
+    <h1 id="brief-name">BREACH THE MAINFRAME</h1>
+    <p id="brief-text"></p>
+    <p id="brief-hint">press M to start · ESC to abort</p>
+  </div>
+  <div id="mission-complete" hidden>
+    <p id="complete-eyebrow">TRACE COMPLETE — YOU WERE NEVER HERE</p>
+    <h1 id="complete-title">MISSION COMPLETE</h1>
+    <p id="complete-sub"></p>
+    <p id="complete-rank-blurb"></p>
+    <div id="complete-stats">
+      <div><span id="complete-kps"></span><label>KPS</label></div>
+      <div><span id="complete-time"></span><label>TIME</label></div>
+      <div><span id="complete-keys"></span><label>KEYS</label></div>
+    </div>
+    <p id="complete-record"></p>
+    <div id="complete-actions">
+      <button id="again-chip" class="theme-chip" type="button">↻ run it again</button>
+      <button id="mission-share-chip" class="theme-chip" type="button">⧉ share result</button>
+      <button id="menu-chip" class="theme-chip" type="button">☰ menu</button>
+    </div>
+  </div>
   <header id="hud">
     <span id="hud-theme">MATRIX GREEN</span>
-    <span id="hud-hint">any key = type · G granted · D denied · F fullscreen · ESC clear</span>
+    <span id="hud-hint">any key = type · M mission · G granted · D denied · F fullscreen · ESC clear</span>
   </header>
   <nav id="theme-dock" aria-label="Theme selector">
     <button class="theme-chip" data-theme="matrix" type="button" aria-label="Matrix Green">▮ matrix</button>
     <button class="theme-chip" data-theme="cyber" type="button" aria-label="Cyber Blue">▮ cyber</button>
     <button class="theme-chip" data-theme="amber" type="button" aria-label="Amber Retro">▮ amber</button>
+    <button class="theme-chip" id="mission-chip" type="button" aria-label="Start a mission">◈ mission</button>
+    <button class="theme-chip" id="lang-chip" type="button" aria-label="Switch language">🄓 日本語</button>
     <button class="theme-chip" id="share-chip" type="button" aria-label="Copy share link">⧉ share</button>
   </nav>
 </main>
