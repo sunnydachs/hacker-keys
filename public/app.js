@@ -320,7 +320,8 @@ window.addEventListener("keydown", (event) => {
     return;
   }
 
-  if (key === "m" || key === "M") { openBrief(); return; }
+  // M mid-mission is ignored: the brief would swallow typing and strand the active run
+  if ((key === "m" || key === "M") && !mission) { openBrief(); return; }
 
   if (mission) {
     const result = advance(mission, mission.missionId);
