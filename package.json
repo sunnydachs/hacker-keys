@@ -9,6 +9,6 @@
     "serve": "python3 -m http.server 8090 --directory public"
   },
   "devDependencies": {
-    "vitest": "^4.1.11"
+    "vitest": "^5.0.1"
   }
 }
