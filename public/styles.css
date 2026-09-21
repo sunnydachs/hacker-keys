@@ -26,6 +26,11 @@ body {
   padding: 18px 22px 64px;
 }
 
+/* Mission mode pushes the code stream below the HUD so they never collide */
+body.mission-live #terminal {
+  padding-top: 76px;
+}
+
 #screen {
   height: calc(100% - 24px);
   overflow-y: auto;
