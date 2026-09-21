@@ -1,0 +1,14 @@
+{
+  "name": "hacker-keys",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Type like a movie hacker — fake hacking simulator (framework-free static site)",
+  "scripts": {
+    "test": "vitest run",
+    "serve": "python3 -m http.server 8090 --directory public"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.11"
+  }
+}

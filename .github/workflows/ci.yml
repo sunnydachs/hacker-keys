@@ -25,14 +25,36 @@ jobs:
       run: npm install
     - name: Run tests
       run: npm test
-    # Optional: Codecov upload. Requires CODECOV_TOKEN in repo secrets.
-    - name: Generate coverage (Node 20.x only)
+    - name: Serve smoke test (Node 20.x only)
       if: matrix.node-version == '20.x'
-      run: npx --yes c8 --reporter=text-lcov --reporter=text node tests/scoring.test.mjs && node tests/integration.test.mjs
-    - name: Upload coverage to Codecov (Node 20.x only)
-      if: matrix.node-version == '20.x'
-      uses: codecov/codecov-action@v7
-      with:
-        files: ./coverage/lcov.info
-        token: ${{ secrets.CODECOV_TOKEN }}
-        fail_ci_if_error: false
+      run: |
+        node -e "
+        const http = require('http');
+        const fs = require('fs');
+        const path = require('path');
+        const mime = {'.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css'};
+        const server = http.createServer((req, res) => {
+          const file = path.join('public', req.url === '/' ? 'index.html' : req.url);
+          try {
+            const data = fs.readFileSync(file);
+            res.writeHead(200, {'Content-Type': mime[path.extname(file)] || 'application/octet-stream'});
+            res.end(data);
+          } catch { res.writeHead(404); res.end(); }
+        });
+        server.listen(8091, async () => {
+          const get = (u) => new Promise((resolve, reject) => {
+            http.get('http://127.0.0.1:8091' + u, (r) => {
+              let b = ''; r.on('data', c => b += c); r.on('end', () => resolve({code: r.statusCode, body: b}));
+            }).on('error', reject);
+          });
+          const index = await get('/');
+          if (index.code !== 200) throw new Error('index 404');
+          const js = await get('/typer.js');
+          if (js.code !== 200) throw new Error('typer.js 404');
+          if (!/export const THEMES/.test(js.body)) throw new Error('typer.js malformed');
+          const css = await get('/styles.css');
+          if (css.code !== 200) throw new Error('styles.css 404');
+          console.log('serve smoke test: all 3 assets 200');
+          server.close();
+        });
+        "
